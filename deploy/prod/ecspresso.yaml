@@ -1,0 +1,11 @@
+region: us-east-1
+cluster: ca-prod-cluster
+service: nextjs-service
+service_definition: service-def.json
+task_definition: task-def.json
+timeout: 10m
+
+plugins:
+  - name: tfstate
+    config:
+      url: s3://tf-state-ecs-demo-bucket/prod/ecs/terraform.tfstate

@@ -1,0 +1,50 @@
+{
+  "desiredCount": 1,
+  "capacityProviderStrategy": [
+    {
+      "capacityProvider": "{{ tfstate `aws_ecs_capacity_provider.main.name` }}",
+      "weight": 1,
+      "base": 0
+    }
+  ],
+"deploymentConfiguration": {
+    "maximumPercent": 200,
+    "minimumHealthyPercent": 100,
+    "deploymentCircuitBreaker": {
+      "enable": true,
+      "rollback": true
+    }
+  },
+  "enableExecuteCommand": true,
+  "propagateTags": "TASK_DEFINITION",
+  "enableECSManagedTags": true,
+  "tags": [
+    { "key": "Environment", "value": "prod" },
+    { "key": "Application", "value": "nextjs" },
+    { "key": "ManagedBy", "value": "ecspresso" }
+  ],
+  "networkConfiguration": {
+    "awsvpcConfiguration": {
+      "subnets": [ 
+        "{{ tfstate `aws_subnet.private[0].id` }}",
+        "{{ tfstate `aws_subnet.private[1].id` }}",
+        "{{ tfstate `aws_subnet.private[2].id` }}"
+
+      ],
+      "securityGroups": [
+        "{{ tfstate `aws_security_group.ecs_nodes.id ` }}"
+      ],
+      "assignPublicIp": "DISABLED"
+    }
+  },
+  "placementStrategy": [
+    {
+      "type": "spread",
+      "field": "attribute:ecs.availability-zone"
+    },
+    {
+      "type": "binpack",
+      "field": "memory"
+    }
+  ]
+}

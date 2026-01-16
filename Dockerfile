@@ -19,6 +19,9 @@ RUN yarn build
 # Stage 2: Production Stage
 FROM node:22-alpine AS runner
 
+# Install curl
+RUN apk add --no-cache curl
+
 # Create a non-root user and group
 RUN addgroup -S nodejs && adduser -S nodejs -G nodejs
 
@@ -43,6 +46,10 @@ USER nodejs
 
 # Expose application port
 EXPOSE 3000
+
+# Native health checks
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD curl -f http://localhost:3000/health || exit 1
 
 # Start the Next.js application
 CMD ["yarn", "start"]
