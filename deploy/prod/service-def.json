@@ -1,5 +1,5 @@
 {
-  "desiredCount": 1,
+  "desiredCount": 2,
   "capacityProviderStrategy": [
     {
       "capacityProvider": "{{ tfstate `aws_ecs_capacity_provider.main.name` }}",
@@ -15,6 +15,13 @@
       "rollback": true
     }
   },
+  "loadBalancers": [
+    {
+      "targetGroupArn": "{{ tfstate `aws_lb_target_group.nextjs.arn` }}",
+      "containerName": "app",
+      "containerPort": 3000
+    }
+  ],
   "enableExecuteCommand": true,
   "propagateTags": "TASK_DEFINITION",
   "enableECSManagedTags": true,
