@@ -66,7 +66,7 @@ jobs:
 
           if [ "$SERVICE_STATUS" != "ACTIVE" ]; then
             echo "Service not found. Running initial create..."
-            ecspresso deploy --config
+            ecspresso deploy
           else
             echo "Service is active. Running deploy..."
             ecspresso verify --config config.yaml
