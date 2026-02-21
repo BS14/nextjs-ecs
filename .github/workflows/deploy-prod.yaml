@@ -55,7 +55,7 @@ jobs:
 
       - name: Deploy to ECS
         run: |
-          cd env/${{ env.ENV }}/
+          cd deploy/${{ env.ENV }}/
           ecspresso verify
           ecspresso deploy \
             --config config.yaml \
