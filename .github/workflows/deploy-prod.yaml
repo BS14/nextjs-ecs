@@ -39,7 +39,7 @@ jobs:
 
       # 3. Build & Push Image
       - name: Build, Tag, and Push Image to ECR
-        id: build-image
+        id: set-tag
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
