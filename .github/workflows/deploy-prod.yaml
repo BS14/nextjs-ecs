@@ -12,7 +12,7 @@ permissions:
 env:
   ENV: prod
   AWS_REGION: us-east-1
-  ECR_REPOSITORY: nextjs-service
+  ECR_REPOSITORY: ca-nextjs
   ECS_CLUSTER: ca-prod-cluster
   ECS_SERVICE: nextjs-service
   RESOURCE_ID: service/ca-prod-cluster/nextjs-service
