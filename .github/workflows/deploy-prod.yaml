@@ -57,10 +57,21 @@ jobs:
         run: |
           cd deploy/${{ env.ENV }}/
           ecspresso verify
-          ecspresso deploy \
-            --config config.yaml \
-            --keep-desired-count \
-            --wait
+
+          SERVICE_STATUS=$(aws ecs describe-services \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --services ${{ env.ECS_SERVICE }} \
+            --query "services[0].status" \
+            --output text)
+
+          if [ "$SERVICE_STATUS" != "ACTIVE" ]; then
+            echo "Service not found. Running initial create..."
+            ecspresso create --config config.yaml --tasks 2
+          else
+            echo "Service is active. Running deploy..."
+            ecspresso verify --config config.yaml
+            ecspresso deploy --config config.yaml --tasks -1 --wait
+          fi
         env:
           IMAGE_TAG: ${{ github.sha }}
 
