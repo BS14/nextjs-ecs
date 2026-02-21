@@ -97,20 +97,22 @@ jobs:
       
       - name: Configure CPU Policy
         run: |
+          echo '{"TargetValue":50.0,"PredefinedMetricSpecification":{"PredefinedMetricType":"ECSServiceAverageCPUUtilization"}}' > cpu-config.json
           aws application-autoscaling put-scaling-policy \
             --service-namespace ecs \
             --resource-id service/${{ env.ECS_CLUSTER }}/${{ env.ECS_SERVICE }} \
             --scalable-dimension ecs:service:DesiredCount \
             --policy-name cpu-autoscaling \
             --policy-type TargetTrackingScaling \
-            --target-tracking-configuration '{"TargetValue":50.0,"PredefinedMetricSpecification":{"PredefinedMetricType":"ECSServiceAverageCPUUtilization"}}'
+            --target-tracking-scaling-policy-configuration file://cpu-config.json
 
       - name: Configure Memory Policy
         run: |
+          echo '{"TargetValue":70.0,"PredefinedMetricSpecification":{"PredefinedMetricType":"ECSServiceAverageMemoryUtilization"}}' > mem-config.json
           aws application-autoscaling put-scaling-policy \
             --service-namespace ecs \
             --resource-id service/${{ env.ECS_CLUSTER }}/${{ env.ECS_SERVICE }} \
             --scalable-dimension ecs:service:DesiredCount \
             --policy-name memory-autoscaling \
             --policy-type TargetTrackingScaling \
-            --target-tracking-configuration '{"TargetValue":70.0,"PredefinedMetricSpecification":{"PredefinedMetricType":"ECSServiceAverageMemoryUtilization"}}'
+            --target-tracking-scaling-policy-configuration file://mem-config.json
