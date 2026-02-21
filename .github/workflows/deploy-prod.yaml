@@ -69,8 +69,7 @@ jobs:
             ecspresso deploy
           else
             echo "Service is active. Running deploy..."
-            ecspresso verify --config config.yaml
-            ecspresso deploy --config config.yaml --tasks -1 --wait
+            ecspresso deploy --tasks -1 --wait
           fi
         env:
           IMAGE_TAG: ${{ github.sha }}
