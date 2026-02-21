@@ -6,7 +6,7 @@ export default function Home() {
       {/* Header Section */}
       <div className="text-center">
         <h1 className="text-5xl font-bold text-blue-600 mb-4">
-          Welcome to the World of Containers
+          Welcome to the World of Containers!
         </h1>
         <p className="text-lg text-gray-700">
           Explore the tools and technologies that power modern applications.
